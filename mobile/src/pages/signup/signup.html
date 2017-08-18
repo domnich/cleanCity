@@ -1,0 +1,79 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>
+      {{pageTitle}}
+    </ion-title>
+    <ion-buttons *ngIf="isSettingsPage" end>
+      <button ion-button icon-only (click)="logout()">
+        Выйти
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <form>
+    <ion-list>
+
+      <ion-item>
+        <ion-label fixed>{{'NAME' | translate}}</ion-label>
+        <ion-input type="text" [(ngModel)]="account.name" name="name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label fixed>{{'Email' | translate}}</ion-label>
+        <ion-input type="email" [(ngModel)]="account.email" name="email"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label fixed>Организация</ion-label>
+        <ion-input type="text" [(ngModel)]="account.organization" name="organization"></ion-input>
+      </ion-item>
+
+      <!--
+      Want to add a Username? Here you go:
+
+      <ion-item>
+        <ion-label floating>Username</ion-label>
+        <ion-input type="text" [(ngModel)]="account.username" name="username"></ion-input>
+      </ion-item>
+      -->
+
+      <ion-item>
+        <ion-label fixed>Город</ion-label>
+        <ion-input type="text" [(ngModel)]="account.city" name="city"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label fixed>Улица</ion-label>
+        <ion-input type="text" [(ngModel)]="account.street" name="street"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <button class="detect-position" (click)="detectPosition()" ion-button color="secondary" block>Определить местоположение</button>
+      </ion-item>
+
+      <ion-item *ngIf="!isSettingsPage">
+        <ion-label fixed>{{'PASSWORD' | translate}}</ion-label>
+        <ion-input type="password" [(ngModel)]="account.password" name="password"></ion-input>
+      </ion-item>
+
+      <ion-item *ngIf="!isSettingsPage">
+        <ion-label fixed>Подтвердить Пароль</ion-label>
+        <ion-input type="password" [(ngModel)]="account.confirmPassword" name="confirmPassword"></ion-input>
+      </ion-item>
+
+      <div padding *ngIf="!isSettingsPage">
+        <button  (click)="doSignup()" ion-button color="primary" block>{{'SIGNUP' | translate}}</button>
+      </div>
+
+      <div padding *ngIf="isSettingsPage">
+        <button  (click)="doSignup()" ion-button color="primary" block>Сохранить настройки</button>
+      </div>
+
+    </ion-list>
+  </form>
+</ion-content>
