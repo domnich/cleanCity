@@ -52,6 +52,23 @@ export class User {
     return seq;
   }
 
+  test() {
+
+    let seq = this.api.get('tasks').share()
+
+    seq
+      .map(res => res.json())
+      .subscribe(res => {
+        // If the API returned a successful response, mark the user as logged in
+
+      }, err => {
+        console.error('ERROR', err);
+      });
+
+    return seq;
+  }
+
+
   /**
    * Send a POST request to our signup endpoint with the data
    * the user entered on the form.

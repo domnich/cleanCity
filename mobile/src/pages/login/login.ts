@@ -38,7 +38,7 @@ export class LoginPage {
   doLogin() {
     this.storage.set('user', true);
 
-
+this.user.test();
     this.user.login(this.account).subscribe((resp) => {
       this.navCtrl.push(MainPage);
     }, (err) => {
