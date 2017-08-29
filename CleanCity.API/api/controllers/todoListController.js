@@ -8,7 +8,7 @@ var mongoose = require('mongoose'),
     Task = mongoose.model('Tasks');
 
 exports.list_all_tasks = function(req, res) {
-    Task.find({}, function(err, task) {
+    Task.find({ userId: req.user._id }, function(err, task) {
         if (err)
             res.send(err);
         res.json(task);
@@ -19,9 +19,11 @@ exports.list_all_tasks = function(req, res) {
 
 
 exports.create_a_task = function(req, res) {
-    var new_task = new Task(req.body);
-
-    Task.find({name : new_task.name}).exec(function(err, docs) {
+    var new_task = new Task();
+    new_task.name = req.body.name;
+    new_task.userId = req.user._id;
+//{name : new_task.name}
+    Task.find({}).exec(function(err, docs) {
         console.log(err)
         console.log(docs)
 

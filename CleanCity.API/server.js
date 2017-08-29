@@ -8,12 +8,18 @@ var express = require('express'),
     Task = require('./api/models/todoListModel'), //created model loading here
     bodyParser = require('body-parser');
 
+var passport = require('passport');
+
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/cleanCity', {useMongoClient: true});
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
+
+
+app.use(passport.initialize());
+
 app.use(bodyParser.json());
 // Add headers
 app.use(function (req, res, next) {

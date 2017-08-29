@@ -21,7 +21,8 @@ var TaskSchema = new Schema({
             enum: ['pending', 'ongoing', 'completed']
         }],
         default: ['pending']
-    }
+    },
+    userId: String
 });
 
 module.exports = mongoose.model('Tasks', TaskSchema);
