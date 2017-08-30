@@ -41,7 +41,7 @@ app.use(bodyParser.json());
 //     next();
 // });
 
-var routes = require('./api/routes/todoListRoutes'); //importing route
+var routes = require('./api/routes/appRoutes'); //importing route
 routes(app); //register the route
 
 
