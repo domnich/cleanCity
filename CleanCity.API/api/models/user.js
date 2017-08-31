@@ -17,6 +17,12 @@ var UserSchema = new mongoose.Schema({
     organization: {
         type: String
     },
+    city: {
+        type: String
+    },
+    street: {
+        type: String
+    },
     password: {
         type: String,
         required: true

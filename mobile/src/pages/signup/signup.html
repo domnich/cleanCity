@@ -17,16 +17,17 @@
 <ion-content>
   <form>
     <ion-list>
-
-      <ion-item>
-        <ion-label fixed>{{'NAME' | translate}}</ion-label>
-        <ion-input type="text" [(ngModel)]="account.name" name="name"></ion-input>
-      </ion-item>
-
       <ion-item>
         <ion-label fixed>{{'Email' | translate}}</ion-label>
         <ion-input type="email" [(ngModel)]="account.email" name="email"></ion-input>
       </ion-item>
+
+      <ion-item>
+        <ion-label fixed>{{'NAME' | translate}}</ion-label>
+        <ion-input type="text" [(ngModel)]="account.username" name="username"></ion-input>
+      </ion-item>
+
+
 
       <ion-item>
         <ion-label fixed>Организация</ion-label>
@@ -63,7 +64,7 @@
 
       <ion-item *ngIf="!isSettingsPage">
         <ion-label fixed>Подтвердить Пароль</ion-label>
-        <ion-input type="password" [(ngModel)]="account.confirmPassword" name="confirmPassword"></ion-input>
+        <ion-input type="password" [(ngModel)]="account.passwordConf" name="confirmPassword"></ion-input>
       </ion-item>
 
       <div padding *ngIf="!isSettingsPage">

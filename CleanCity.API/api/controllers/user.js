@@ -7,6 +7,8 @@ exports.createUser = function(req, res) {
         email: req.body.email,
         username: req.body.username,
         organization: req.body.organization,
+        city: req.body.city,
+        street: req.body.street,
         password: req.body.password,
         passwordConf: req.body.passwordConf
     });
