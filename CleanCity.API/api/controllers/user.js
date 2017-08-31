@@ -13,12 +13,29 @@ exports.createUser = function(req, res) {
         passwordConf: req.body.passwordConf
     });
 
-    user.save(function(err, user) {
-        if (err)
-            res.send(err);
+    User.find({email : user.email}).exec(function(err, docs) {
+        if (docs.length){
+            return res.status(403).send({
+                success: false,
+                message: 'User Already Exist.'
+            });
+        } else {
+            User.methods.verifyPassword(user.passwordConf).then(function (isMath) {
+                if(isMath) {
+                    user.save(function(err, user) {
+                        if (err)
+                            res.send(err);
 
-        res.json({ success: true, user: user });
+                        res.json({ success: true, user: user });
+                    });
+                } else {
+                    console.log('FFFFFFF');
+                }
+            });
+        }
     });
+
+
 };
 //
 // // Create endpoint /api/users for GET

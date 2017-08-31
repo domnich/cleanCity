@@ -12,9 +12,9 @@ var userController = require('./api/controllers/user');
 // configuration =========
 // =======================
 var port = process.env.PORT || 8080; // used to create, sign, and verify tokens
+mongoose.Promise = global.Promise;
 mongoose.connect(config.database, {useMongoClient: true});
 app.set('superSecret', config.secret); // secret variable
-
 
 // // Add headers
 // app.use(function (req, res, next) {
@@ -41,7 +41,7 @@ app.use(cors({
     allowedOrigins: [
         'http://localhost:8100'
     ]
-}))
+}));
 // use body parser so we can get info from POST and/or URL parameters
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
