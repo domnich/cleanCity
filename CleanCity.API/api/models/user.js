@@ -1,21 +1,33 @@
-// Load required packages
+// get an instance of mongoose and mongoose.Schema
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt-nodejs');
 
-// Define our user schema
+
 var UserSchema = new mongoose.Schema({
-    username: {
+    email: {
         type: String,
         unique: true,
         required: true
     },
+    username: {
+        type: String,
+        required: true
+    },
+    organization: {
+        type: String
+    },
     password: {
+        type: String,
+        required: true
+    },
+    passwordConf: {
         type: String,
         required: true
     }
 });
 
-// Execute before each user.save() call
+
 UserSchema.pre('save', function(callback) {
     var user = this;
 
@@ -31,6 +43,11 @@ UserSchema.pre('save', function(callback) {
             user.password = hash;
             callback();
         });
+        bcrypt.hash(user.passwordConf, salt, null, function(err, hash) {
+            if (err) return callback(err);
+            user.passwordConf = hash;
+            callback();
+        });
     });
 });
 
@@ -41,6 +58,4 @@ UserSchema.methods.verifyPassword = function(password, cb) {
     });
 };
 
-
-// Export the Mongoose model
 module.exports = mongoose.model('User', UserSchema);
