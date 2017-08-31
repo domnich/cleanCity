@@ -20,8 +20,9 @@ exports.createUser = function(req, res) {
                 message: 'User Already Exist.'
             });
         } else {
-            User.methods.verifyPassword(user.passwordConf).then(function (isMath) {
-                if(isMath) {
+
+            User.verifyPassword(user.password, user.passwordConf, function (isMatch) {
+                if(isMatch) {
                     user.save(function(err, user) {
                         if (err)
                             res.send(err);
@@ -29,7 +30,10 @@ exports.createUser = function(req, res) {
                         res.json({ success: true, user: user });
                     });
                 } else {
-                    console.log('FFFFFFF');
+                    return res.status(403).send({
+                        success: false,
+                        message: "Passwords doesn't math."
+                    });
                 }
             });
         }
