@@ -43,20 +43,12 @@ UserSchema.pre('save', function(callback) {
             user.password = hash;
             callback();
         });
-        bcrypt.hash(user.passwordConf, salt, null, function(err, hash) {
-            if (err) return callback(err);
-            user.passwordConf = hash;
-            callback();
-        });
     });
 });
 
 UserSchema.methods.verifyPassword = function(password, cb) {
+    console.log(password, 'passwordpassword')
     bcrypt.compare(password, this.password, function(err, isMatch) {
-        if (err) return cb(err);
-        cb(null, isMatch);
-    });
-    bcrypt.compare(password, this.passwordConf, function(err, isMatch) {
         if (err) return cb(err);
         cb(null, isMatch);
     });

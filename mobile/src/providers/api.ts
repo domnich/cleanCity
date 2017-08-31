@@ -7,8 +7,8 @@ import 'rxjs/add/operator/map';
  */
 @Injectable()
 export class Api {
-  url: string = 'http://localhost:3000';
-
+  url: string = 'http://localhost:8080/api';
+  simpleUrl: string = 'http://localhost:8080';
   constructor(public http: Http) {
   }
 
@@ -33,6 +33,10 @@ export class Api {
 
   post(endpoint: string, body: any, options?: RequestOptions) {
     return this.http.post(this.url + '/' + endpoint, body, options);
+  }
+
+  simplePost(endpoint: string, body: any, options?: RequestOptions) {
+    return this.http.post(this.simpleUrl + '/' + endpoint, body, options);
   }
 
   put(endpoint: string, body: any, options?: RequestOptions) {

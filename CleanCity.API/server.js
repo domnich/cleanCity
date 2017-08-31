@@ -3,7 +3,7 @@ var app         = express();
 var bodyParser  = require('body-parser');
 var morgan      = require('morgan');
 var mongoose    = require('mongoose');
-
+var cors = require('express-cors')
 var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var config = require('./config'); // get our config file
 var User   = require('./api/models/user'); // get our mongoose model
@@ -15,19 +15,12 @@ var port = process.env.PORT || 8080; // used to create, sign, and verify tokens
 mongoose.connect(config.database, {useMongoClient: true});
 app.set('superSecret', config.secret); // secret variable
 
-// use body parser so we can get info from POST and/or URL parameters
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-
-// use morgan to log requests to the console
-app.use(morgan('dev'));
-
 
 // // Add headers
 // app.use(function (req, res, next) {
 //
 //     // Website you wish to allow to connect
-//     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+//     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8100');
 //
 //     // Request methods you wish to allow
 //     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -42,6 +35,22 @@ app.use(morgan('dev'));
 //     // Pass to next layer of middleware
 //     next();
 // });
+
+
+app.use(cors({
+    allowedOrigins: [
+        'http://localhost:8100'
+    ]
+}))
+// use body parser so we can get info from POST and/or URL parameters
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+// use morgan to log requests to the console
+app.use(morgan('dev'));
+
+
+
 
 
 
@@ -69,7 +78,7 @@ app.get('/setup', function(req, res) {
     });
 });
 
-app.post('/registration', userController.createUser);
+app.post('/signup', userController.createUser);
 
 
 

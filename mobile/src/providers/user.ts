@@ -54,7 +54,7 @@ export class User {
 
   test() {
 
-    let seq = this.api.get('tasks').share()
+    let seq = this.api.get('signup').share()
 
     seq
       .map(res => res.json())
@@ -74,7 +74,9 @@ export class User {
    * the user entered on the form.
    */
   signup(accountInfo: any) {
-    let seq = this.api.post('signup', accountInfo).share();
+    console.log(accountInfo)
+
+    let seq = this.api.simplePost('signup', accountInfo).share();
 
     seq
       .map(res => res.json())
