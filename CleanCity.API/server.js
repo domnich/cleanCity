@@ -49,13 +49,6 @@ app.use(bodyParser.json());
 // use morgan to log requests to the console
 app.use(morgan('dev'));
 
-
-
-
-
-
-
-
 app.get('/', function(req, res) {
     res.send('Hello! The API is at http://localhost:' + port + '/api');
 });
@@ -80,16 +73,11 @@ app.get('/setup', function(req, res) {
 
 app.post('/signup', userController.createUser);
 
-
-
-
-
 // API ROUTES -------------------
 
 // get an instance of the router for api routes
 var apiRoutes = express.Router();
 
-// TODO: route to authenticate a user (POST http://localhost:8080/api/authenticate)
 
 // route to authenticate a user (POST http://localhost:8080/api/authenticate)
 apiRoutes.post('/authenticate', function(req, res) {
