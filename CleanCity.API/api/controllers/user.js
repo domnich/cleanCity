@@ -41,8 +41,6 @@ exports.createUser = function(req, res) {
             });
         }
     });
-
-
 };
 //
 // // Create endpoint /api/users for GET
