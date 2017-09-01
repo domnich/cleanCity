@@ -63,8 +63,8 @@ export class MyApp {
   ]
 
   constructor(private translate: TranslateService, private platform: Platform, settings: Settings, private config: Config, private statusBar: StatusBar, private splashScreen: SplashScreen, private storage: Storage) {
-    this.storage.get('user').then((response) => {
-      if(response) {
+    this.storage.get('user').then((user) => {
+      if(user && user.token) {
         this.rootPage = TabsPage;
       } else {
         this.rootPage = FirstRunPage;

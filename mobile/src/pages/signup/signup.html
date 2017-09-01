@@ -68,11 +68,11 @@
       </ion-item>
 
       <div padding *ngIf="!isSettingsPage">
-        <button  (click)="doSignup()" ion-button color="primary" block>{{'SIGNUP' | translate}}</button>
+        <button  (click)="signup()" ion-button color="primary" block>{{'SIGNUP' | translate}}</button>
       </div>
 
       <div padding *ngIf="isSettingsPage">
-        <button  (click)="doSignup()" ion-button color="primary" block>Сохранить настройки</button>
+        <button  (click)="signup()" ion-button color="primary" block>Сохранить настройки</button>
       </div>
 
     </ion-list>

@@ -27,6 +27,9 @@ exports.createUser = function(req, res) {
                         if (err)
                             res.send(err);
 
+                        delete user.password;
+                        delete user.passwordConf;
+
                         res.json({ success: true, user: user });
                     });
                 } else {

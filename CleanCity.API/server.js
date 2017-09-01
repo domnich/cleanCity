@@ -80,7 +80,7 @@ var apiRoutes = express.Router();
 
 
 // route to authenticate a user (POST http://localhost:8080/api/authenticate)
-apiRoutes.post('/authenticate', function(req, res) {
+apiRoutes.post('/login', function(req, res) {
     // find the user
     User.findOne({
         email: req.body.email
