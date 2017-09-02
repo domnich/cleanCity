@@ -13,7 +13,7 @@ import {LoginPage} from '../login/login';
   templateUrl: 'signup.html'
 })
 export class SignupPage {
-  account: { name?: string, email?: string, password?: string, city?: string, street?: string, confirmPassword?: string, organization?: string } = {};
+  account: {name?: string, email?: string, password?: string, city?: string, street?: string, confirmPassword?: string, organization?: string} = {};
 
   // Our translated text strings
   private signupErrorString: string;
@@ -31,8 +31,10 @@ export class SignupPage {
 
     this.storage.get('user').then((user) => {
 
-      this.isSettingsPage = user && user.token;
-      console.log(this.isSettingsPage)
+      this.isSettingsPage = user && user.hasOwnProperty('token');
+      if(this.isSettingsPage) {
+        this.account = user;
+      }
     });
 
 
@@ -43,14 +45,14 @@ export class SignupPage {
 
   signup() {
     let spinner = this.loader.create({
-   //   dismissOnPageChange: true
+      //   dismissOnPageChange: true
     });
     spinner.present();
     this.user.signup(this.account).subscribe((resp) => {
-      if(resp.status == 200) {
+      if (resp.status == 200) {
         let user = JSON.parse(resp['_body']).user;
         this.user.login(user).subscribe((resp) => {
-          if(resp.status ==  200) {
+          if (resp.status == 200) {
             let user = JSON.parse(resp['_body']).user,
               token = JSON.parse(resp['_body']).token;
             user.token = token;
@@ -65,7 +67,7 @@ export class SignupPage {
 
             });
           }
-        } , (err) => {
+        }, (err) => {
           // this.navCtrl.push(MainPage);
           // // Unable to log in
           // let toast = this.toastCtrl.create({
@@ -76,12 +78,6 @@ export class SignupPage {
           // toast.present();
         });
       }
-
-
-
-
-
-      //this.navCtrl.push(MainPage);
     }, (err) => {
       let toast = this.toastCtrl.create({
         message: this.signupErrorString,
@@ -91,7 +87,6 @@ export class SignupPage {
       toast.present();
     });
   }
-
 
   detectPosition() {
     this.geolocation.getCurrentPosition().then(pos => {
