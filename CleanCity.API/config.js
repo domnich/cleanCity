@@ -4,3 +4,4 @@ module.exports = {
     'database': 'mongodb://localhost/cleanCity'
 
 };
+

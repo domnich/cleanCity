@@ -29,7 +29,7 @@ export class User {
 
 
   throwTrash(accountInfo: any) {
-    let seq = this.api.post('throw-trash', {}).share();
+    let seq = this.api.get('send').share();
 
     seq
       .map(res => res.json())

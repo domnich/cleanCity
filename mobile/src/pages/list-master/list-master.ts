@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController } from 'ionic-angular';
+import { NavController, ModalController, LoadingController, ToastController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { ItemCreatePage } from '../item-create/item-create';
 import { ItemDetailPage } from '../item-detail/item-detail';
@@ -15,7 +15,9 @@ import { Item } from '../../models/item';
 export class ListMasterPage {
   currentItems: Item[];
 
-  constructor(public navCtrl: NavController, public items: Items, public modalCtrl: ModalController, private storage: Storage, private userService: User) {
+  constructor(public navCtrl: NavController,
+              public toastCtrl: ToastController,
+              public items: Items, public modalCtrl: ModalController, private storage: Storage, private userService: User, private loader: LoadingController) {
     this.currentItems = this.items.query();
   }
 
@@ -52,15 +54,29 @@ export class ListMasterPage {
   }
 
   throwTrash() {
+    let spinner = this.loader.create({
+      content: 'Обработка запроса...'
+    });
+    spinner.present();
 
+    this.userService.throwTrash({}).subscribe((resp) => {
 
-this.userService.getUsers().subscribe((resp) => {}, () => {})
+      let toast = this.toastCtrl.create({
+        message: 'Заявка отправлена, мы вывезем мусор в ближайщие пару дней',
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
 
-//     this.userService.throwTrash({}).subscribe((resp) => {
-// alert(777)
-//     }, (err) => {
-//
-//     });
+      spinner.dismiss();
+    }, (err) => {
+      let toast = this.toastCtrl.create({
+        message: 'Что то пошло не так... Пожалуйста повторите попытку или наберите нас на телефон',
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
+    });
 
   }
 

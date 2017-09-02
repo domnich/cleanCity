@@ -107,7 +107,7 @@ apiRoutes.post('/login', function (req, res) {
 
 apiRoutes.use(function (req, res, next) {
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
-console.log(req.headers)
+
     if (token) {
         jwt.verify(token, app.get('superSecret'), function (err, decoded) {
             if (err) {
@@ -128,9 +128,7 @@ console.log(req.headers)
     }
 });
 
-
-
-apiRoutes.post('throw-trash', sendMailContoller.sendMail);
+apiRoutes.get('/send', sendMailContoller.sendMail);
 
 apiRoutes.get('/', function (req, res) {
     res.json({message: 'Welcome to the coolest API on earth!'});
