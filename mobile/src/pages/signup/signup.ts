@@ -51,18 +51,18 @@ export class SignupPage {
         let user = JSON.parse(resp['_body']).user;
         this.user.login(user).subscribe((resp) => {
           if(resp.status ==  200) {
-            let token = JSON.parse(resp['_body']).token;
+            let user = JSON.parse(resp['_body']).user,
+              token = JSON.parse(resp['_body']).token;
             user.token = token;
 
             this.storage.set('user', user).then((response) => {
 
               setTimeout(() => {
                 this.navCtrl.push(MainPage);
-              }, 1000);
-
-              setTimeout(() => {
                 spinner.dismiss();
-              }, 2000);
+              }, 100);
+
+
             });
           }
         } , (err) => {

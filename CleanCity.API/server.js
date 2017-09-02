@@ -8,6 +8,7 @@ var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var config = require('./config'); // get our config file
 var User   = require('./api/models/user'); // get our mongoose model
 var userController = require('./api/controllers/user');
+var bcrypt = require('bcrypt-nodejs');
 // =======================
 // configuration =========
 // =======================
@@ -80,8 +81,7 @@ var apiRoutes = express.Router();
 
 
 // route to authenticate a user (POST http://localhost:8080/api/authenticate)
-apiRoutes.post('/login', function(req, res) {
-    // find the user
+apiRoutes.post('/login', function (req, res) {
     User.findOne({
         email: req.body.email
     }, function(err, user) {
@@ -89,27 +89,42 @@ apiRoutes.post('/login', function(req, res) {
         if (err) throw err;
 
         if (!user) {
-            res.json({ success: false, message: 'Authentication failed. User not found.' });
+
+            return res.status(401).send({
+                success: false,
+                message: 'Authentication failed. User not found.'
+            });
         } else if (user) {
 
-            // check if password matches
-            if (user.password != req.body.password) {
-                res.json({ success: false, message: 'Authentication failed. Wrong password.' });
-            } else {
+            bcrypt.compare(req.body.password, user.password, function(err, isMatch) {
 
-                // if user is found and password is right
-                // create a token
-                var token = jwt.sign(user, app.get('superSecret'), {
-                    expiresIn : 60*60*24 //expires in 24 hours
-                });
 
-                // return the information including token as JSON
-                res.json({
-                    success: true,
-                    message: 'Enjoy your token!',
-                    token: token
-                });
-            }
+                if (!isMatch) {
+                    return res.status(401).send({
+                        success: false,
+                        message: 'Authentication failed. Wrong password.'
+                    });
+                } else {
+                    var token = jwt.sign(user, app.get('superSecret'), {
+                        expiresIn : 60*60*24 //expires in 24 hours
+                    });
+
+
+                    // return the information including token as JSON
+                    res.json({
+                        success: true,
+                        status: 200,
+                        message: 'Enjoy your token!',
+                        user: user,
+                        token: token
+                    });
+                }
+
+            });
+
+
+
+
 
         }
 

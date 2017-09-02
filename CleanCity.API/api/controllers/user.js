@@ -1,6 +1,9 @@
 // // Load required packages
 var User = require('../models/user');
-
+var bcrypt = require('bcrypt-nodejs');
+var jwt    = require('jsonwebtoken');
+var express     = require('express');
+var app         = express();
 // Create endpoint /api/users for POST
 exports.createUser = function(req, res) {
     var user = new User({
@@ -42,6 +45,52 @@ exports.createUser = function(req, res) {
         }
     });
 };
+
+exports.login = function (req, res) {
+    User.findOne({
+        email: req.body.email
+    }, function(err, user) {
+
+        if (err) throw err;
+
+        if (!user) {
+
+            return res.status(401).send({
+                success: false,
+                message: 'Authentication failed. User not found.'
+            });
+        } else if (user) {
+
+            bcrypt.compare(req.body.password, user.password, function(err, isMatch) {
+                if (!isMatch) {
+                    return res.status(401).send({
+                        success: false,
+                        message: 'Authentication failed. Wrong password.'
+                    });
+                } else {
+                    var token = jwt.sign(user, app.get('superSecret'), {
+                        expiresIn : 60*60*24 //expires in 24 hours
+                    });
+
+                    // return the information including token as JSON
+                    res.json({
+                        success: true,
+                        message: 'Enjoy your token!',
+                        token: token
+                    });
+                }
+
+            });
+
+
+
+
+
+        }
+
+    });
+}
+
 //
 // // Create endpoint /api/users for GET
 // exports.getUsers = function(req, res) {
