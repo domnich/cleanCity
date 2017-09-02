@@ -8,43 +8,54 @@ var jwt = require('jsonwebtoken');
 var config = require('./config');
 var User = require('./api/models/user');
 var userController = require('./api/controllers/user');
+var sendMailContoller = require('./api/controllers/sendEmail');
+var todoList = require('./api/controllers/todoListController');
 var bcrypt = require('bcrypt-nodejs');
 var port = process.env.PORT || 8080;
 mongoose.Promise = global.Promise;
 mongoose.connect(config.database, {useMongoClient: true});
 app.set('superSecret', config.secret); // secret variable
 
-// // Add headers
-// app.use(function (req, res, next) {
+// app.use(function(req, res, next) {
+//     res.header("Access-Control-Allow-Headers","Access-Control-Allow-Headers");
 //
-//     // Website you wish to allow to connect
-//     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8100');
-//
-//     // Request methods you wish to allow
-//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-//
-//     // Request headers you wish to allow
-//     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-//
-//     // Set to true if you need the website to include cookies in the requests sent
-//     // to the API (e.g. in case you use sessions)
-//     res.setHeader('Access-Control-Allow-Credentials', true);
-//
-//     // Pass to next layer of middleware
+// });
+// app.use(function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*"); // keep this if your api accepts cross-origin requests
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, X-Access-Token");
+//     next();
+// });
+
+// app.use(function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", '*');
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     next();
+// });
+
+
+// app.use(cors({
+//     allowedOrigins: [
+//         'http://localhost:8100'
+//     ]
+// }));
+
+
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
+
+app.use(morgan('dev'));
+// app.use(function(req, res, next) {
+//     res.header('Access-Control-Allow-Origin', '*');
+//     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+//     res.header('Access-Control-Allow-Headers', 'Accept, Content-Type, Origin');
 //     next();
 // });
 
 
 app.use(cors({
-    allowedOrigins: [
-        'http://localhost:8100'
-    ]
+    allowedOrigins: ['http://localhost:8100'],
+    headers: ['X-Requested-With', 'Accept', 'Origin', 'x-access-token', 'Content-Type']
 }));
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
-
-app.use(morgan('dev'));
-
 app.get('/', function (req, res) {
     res.send('Hello! The API is at http://localhost:' + port + '/api');
 });
@@ -96,7 +107,7 @@ apiRoutes.post('/login', function (req, res) {
 
 apiRoutes.use(function (req, res, next) {
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
-
+console.log(req.headers)
     if (token) {
         jwt.verify(token, app.get('superSecret'), function (err, decoded) {
             if (err) {
@@ -116,6 +127,10 @@ apiRoutes.use(function (req, res, next) {
         });
     }
 });
+
+
+
+apiRoutes.post('throw-trash', sendMailContoller.sendMail);
 
 apiRoutes.get('/', function (req, res) {
     res.json({message: 'Welcome to the coolest API on earth!'});

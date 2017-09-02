@@ -5,7 +5,7 @@ import { ItemCreatePage } from '../item-create/item-create';
 import { ItemDetailPage } from '../item-detail/item-detail';
 import { LoginPage } from '../login/login';
 import { Items } from '../../providers/providers';
-
+import {User} from '../../providers/user';
 import { Item } from '../../models/item';
 
 @Component({
@@ -15,7 +15,7 @@ import { Item } from '../../models/item';
 export class ListMasterPage {
   currentItems: Item[];
 
-  constructor(public navCtrl: NavController, public items: Items, public modalCtrl: ModalController, private storage: Storage) {
+  constructor(public navCtrl: NavController, public items: Items, public modalCtrl: ModalController, private storage: Storage, private userService: User) {
     this.currentItems = this.items.query();
   }
 
@@ -45,14 +45,23 @@ export class ListMasterPage {
   deleteItem(item) {
     this.items.delete(item);
   }
-
-  /**
-   * Navigate to the detail page for this item.
-   */
   openItem(item: Item) {
     this.navCtrl.push(ItemDetailPage, {
       item: item
     });
+  }
+
+  throwTrash() {
+
+
+this.userService.getUsers().subscribe((resp) => {}, () => {})
+
+//     this.userService.throwTrash({}).subscribe((resp) => {
+// alert(777)
+//     }, (err) => {
+//
+//     });
+
   }
 
   logout() {

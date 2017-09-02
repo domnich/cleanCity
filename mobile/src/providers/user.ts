@@ -28,13 +28,39 @@ export class User {
   }
 
 
+  throwTrash(accountInfo: any) {
+    let seq = this.api.post('throw-trash', {}).share();
+
+    seq
+      .map(res => res.json())
+      .subscribe(res => {
+
+      }, err => {
+        console.error('ERROR', err);
+      });
+
+    return seq;
+  }
+
+  getUsers() {
+    let seq = this.api.get('users').share();
+
+    seq
+      .map(res => res.json())
+      .subscribe(res => {
+
+      }, err => {
+        console.error('ERROR', err);
+      });
+
+    return seq;
+  }
+
   /**
    * Send a POST request to our signup endpoint with the data
    * the user entered on the form.
    */
   signup(accountInfo: any) {
-    console.log(accountInfo)
-
     let seq = this.api.simplePost('signup', accountInfo).share();
 
     seq
