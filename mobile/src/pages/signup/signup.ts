@@ -51,7 +51,7 @@ export class SignupPage {
     this.user.signup(this.account).subscribe((resp) => {
       if (resp.status == 200) {
         let user = JSON.parse(resp['_body']).user;
-        this.user.login(user).subscribe((resp) => {
+        this.user.login(this.account).subscribe((resp) => {
           if (resp.status == 200) {
             let user = JSON.parse(resp['_body']).user,
               token = JSON.parse(resp['_body']).token;
