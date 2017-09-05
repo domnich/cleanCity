@@ -16,34 +16,41 @@ exports.createUser = function(req, res) {
         passwordConf: req.body.passwordConf
     });
 
-    User.find({email : user.email}).exec(function(err, docs) {
-        if (docs.length){
-            return res.status(403).send({
-                success: false,
-                message: 'User Already Exist.'
-            });
-        } else {
+    if(!user.email || !user.username || !user.password || !user.passwordConf) {
+        return res.status(403).send({
+            success: false,
+            message: 'Fill all required fields'
+        });
+    } else {
+        User.find({email : user.email}).exec(function(err, docs) {
+            if (docs.length){
+                return res.status(403).send({
+                    success: false,
+                    message: 'User Already Exist.'
+                });
+            } else {
 
-            User.verifyPassword(user.password, user.passwordConf, function (isMatch) {
-                if(isMatch) {
-                    user.save(function(err, user) {
-                        if (err)
-                            res.send(err);
+                User.verifyPassword(user.password, user.passwordConf, function (isMatch) {
+                    if(isMatch) {
+                        user.save(function(err, user) {
+                            if (err)
+                                res.send(err);
 
-                        delete user.password;
-                        delete user.passwordConf;
+                            delete user.password;
+                            delete user.passwordConf;
 
-                        res.json({ success: true, user: user });
-                    });
-                } else {
-                    return res.status(403).send({
-                        success: false,
-                        message: "Passwords doesn't math."
-                    });
-                }
-            });
-        }
-    });
+                            res.json({ success: true, user: user });
+                        });
+                    } else {
+                        return res.status(403).send({
+                            success: false,
+                            message: "Passwords doesn't math."
+                        });
+                    }
+                });
+            }
+        });
+    }
 };
 
 exports.login = function (req, res) {
