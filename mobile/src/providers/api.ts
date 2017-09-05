@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, RequestOptions, URLSearchParams, RequestOptionsArgs, Headers } from '@angular/http';
+import { Http, RequestOptions, URLSearchParams, Headers } from '@angular/http';
 import {Storage} from '@ionic/storage';
 import 'rxjs/add/operator/map';
 import {Observable} from "rxjs/Observable";
