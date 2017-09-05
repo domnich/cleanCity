@@ -30,7 +30,7 @@ app.get('/', function (req, res) {
 });
 
 app.post('/signup', userController.createUser);
-app.put('/update-user/:id', userController.updateUser);
+
 
 var apiRoutes = express.Router();
 
@@ -100,9 +100,14 @@ apiRoutes.use(function (req, res, next) {
 
 apiRoutes.get('/send', sendMailContoller.sendMail);
 
+apiRoutes.put('/update-user/:id', userController.updateUser);
+
+
 apiRoutes.get('/', function (req, res) {
     res.json({message: 'Welcome to the coolest API on earth!'});
 });
+
+
 
 apiRoutes.get('/users', function (req, res) {
     User.find({}, function (err, users) {

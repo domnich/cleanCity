@@ -111,12 +111,25 @@ export class SignupPage {
   }
 
   updateUser() {
+    let spinner = this.loader.create();
+    spinner.present();
     delete this.account['passwordConf'];
     delete this.account['password'];
-    //delete this.account['token'];
+    delete this.account['token'];
 
     this.user.updateUser(this.account).subscribe((resp) => {
-      console.log(resp)
+      this.storage.get('user').then((user) => {
+
+
+        let updatedUser = JSON.parse(resp['_body']);
+        if(!updatedUser.hasOwnProperty('token')) {
+          updatedUser.token = user.token;
+        }
+
+        this.storage.set('user', updatedUser);
+
+        spinner.dismiss();
+      });
     });
 
   }

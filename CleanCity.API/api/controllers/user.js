@@ -55,10 +55,13 @@ exports.createUser = function(req, res) {
 
 
 exports.updateUser = function (req, res) {
-
-    User.findOneAndUpdate({_id: req.params._id}, req.body, {new: true}, function(err, user) {
+    console.log(req.params, 'req.bodyreq.body')
+    User.findOneAndUpdate({_id: req.params.id}, req.body, {new: true}, function(err, user) {
         if (err)
-            res.send(err);
+        return res.status(401).send({
+            success: false,
+            message: err.message
+        });
         res.json(user);
     });
 };
