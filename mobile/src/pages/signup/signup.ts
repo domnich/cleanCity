@@ -13,7 +13,7 @@ import {LoginPage} from '../login/login';
   templateUrl: 'signup.html'
 })
 export class SignupPage {
-  account: {name?: string, email?: string, password?: string, city?: string, street?: string, confirmPassword?: string, organization?: string} = {};
+  account: {name?: string, email?: string, password?: string, city?: string, street?: string, passwordConf?: string, organization?: string} = {};
 
   // Our translated text strings
   private signupErrorString: string;
@@ -108,6 +108,17 @@ export class SignupPage {
     this.translateService.get(this.pageTitleKey).subscribe((res) => {
       this.pageTitle = res;
     })
+  }
+
+  updateUser() {
+    delete this.account['passwordConf'];
+    delete this.account['password'];
+    //delete this.account['token'];
+
+    this.user.updateUser(this.account).subscribe((resp) => {
+      console.log(resp)
+    });
+
   }
 
   logout() {

@@ -45,13 +45,20 @@ export class Api {
 
 
      return Observable.fromPromise(this.buildHeaders(options))
-      .switchMap((headers) => {
+      .switchMap((options) => {
         return this.http.get(this.url + '/' + endpoint, options);
       });
 
   }
 
   buildHeaders(options) {
+    if (options == null) {
+      options = new RequestOptions();
+    }
+    if (options.headers == null) {
+      options.headers = new Headers();
+    }
+
     if (options.headers == null) {
       options.headers = new Headers();
     }
@@ -60,6 +67,9 @@ export class Api {
       if(user && user.token) {
         options.headers.append("Content-Type", "application/json");
         options.headers.append('x-access-token', user.token);
+
+
+        console.log(options.headers['x-access-token'])
         return options;
       } else {
         return options;
@@ -68,12 +78,7 @@ export class Api {
   }
 
   post(endpoint: string, body: any, options?: RequestOptions) {
-    if (options == null) {
-      options = new RequestOptions();
-    }
-    if (options.headers == null) {
-      options.headers = new Headers();
-    }
+
     //
     // options.headers.append('x-access-token', "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnt9LCJnZXR0ZXJzIjp7fSwiX2lkIjoiNTlhYTcyMGRmYTFhMTAyOTJjOTA4MTk3Iiwid2FzUG9wdWxhdGVkIjpmYWxzZSwiYWN0aXZlUGF0aHMiOnsicGF0aHMiOnsicGFzc3dvcmRDb25mIjoiaW5pdCIsInBhc3N3b3JkIjoiaW5pdCIsInVzZXJuYW1lIjoiaW5pdCIsImVtYWlsIjoiaW5pdCIsIl9fdiI6ImluaXQiLCJzdHJlZXQiOiJpbml0IiwiY2l0eSI6ImluaXQiLCJvcmdhbml6YXRpb24iOiJpbml0IiwiX2lkIjoiaW5pdCJ9LCJzdGF0ZXMiOnsiaWdub3JlIjp7fSwiZGVmYXVsdCI6e30sImluaXQiOnsiX192Ijp0cnVlLCJwYXNzd29yZENvbmYiOnRydWUsInBhc3N3b3JkIjp0cnVlLCJzdHJlZXQiOnRydWUsImNpdHkiOnRydWUsIm9yZ2FuaXphdGlvbiI6dHJ1ZSwidXNlcm5hbWUiOnRydWUsImVtYWlsIjp0cnVlLCJfaWQiOnRydWV9LCJtb2RpZnkiOnt9LCJyZXF1aXJlIjp7fX0sInN0YXRlTmFtZXMiOlsicmVxdWlyZSIsIm1vZGlmeSIsImluaXQiLCJkZWZhdWx0IiwiaWdub3JlIl19LCJwYXRoc1RvU2NvcGVzIjp7fSwiZW1pdHRlciI6eyJkb21haW4iOm51bGwsIl9ldmVudHMiOnt9LCJfZXZlbnRzQ291bnQiOjAsIl9tYXhMaXN0ZW5lcnMiOjB9fSwiaXNOZXciOmZhbHNlLCJfZG9jIjp7Il9fdiI6MCwicGFzc3dvcmRDb25mIjoiJDJhJDA1JE1xc09vUjFZWUk5LjlLTkRuMTlxZHVqSThybVQ2T3JWWHkwNlJQVExaRk5GelAzVEdMNWNhIiwicGFzc3dvcmQiOiIkMmEkMDUkTXFzT29SMVlZSTkuOUtORG4xOXFkdWpJOHJtVDZPclZYeTA2UlBUTFpGTkZ6UDNUR0w1Y2EiLCJzdHJlZXQiOiJlcXciLCJjaXR5IjoiZXF3Iiwib3JnYW5pemF0aW9uIjoiZXF3IiwidXNlcm5hbWUiOiJxd2UiLCJlbWFpbCI6ImVhQGVhLmNvbSIsIl9pZCI6IjU5YWE3MjBkZmExYTEwMjkyYzkwODE5NyJ9LCIkaW5pdCI6dHJ1ZSwiaWF0IjoxNTA0MzQ1MDYxLCJleHAiOjE1MDQ0MzE0NjF9.Rp2B2C_Z2MXJ-mzHGyQQcNEZvF7bTsDnsFIWkg1D7Dc");
     //
@@ -91,7 +96,7 @@ export class Api {
       return this.http.post(this.url + '/' + endpoint, body, options);
     } else {
       return Observable.fromPromise(this.buildHeaders(options))
-        .switchMap((headers) => {
+        .switchMap((options) => {
           return this.http.post(this.url + '/' + endpoint, body, options);
         });
     }
@@ -103,7 +108,11 @@ export class Api {
   }
 
   put(endpoint: string, body: any, options?: RequestOptions) {
-    return this.http.put(this.url + '/' + endpoint, body, options);
+
+    return Observable.fromPromise(this.buildHeaders(options))
+      .switchMap((options) => {
+        return this.http.put(this.url + '/' + endpoint, body, options);
+      });
   }
 
   delete(endpoint: string, options?: RequestOptions) {

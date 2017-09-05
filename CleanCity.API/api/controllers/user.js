@@ -53,6 +53,16 @@ exports.createUser = function(req, res) {
     }
 };
 
+
+exports.updateUser = function (req, res) {
+
+    User.findOneAndUpdate({_id: req.params._id}, req.body, {new: true}, function(err, user) {
+        if (err)
+            res.send(err);
+        res.json(user);
+    });
+};
+
 exports.login = function (req, res) {
     User.findOne({
         email: req.body.email
@@ -88,11 +98,6 @@ exports.login = function (req, res) {
                 }
 
             });
-
-
-
-
-
         }
 
     });

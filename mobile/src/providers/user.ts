@@ -27,7 +27,6 @@ export class User {
     return seq;
   }
 
-
   throwTrash(accountInfo: any) {
     let seq = this.api.get('send').share();
 
@@ -56,12 +55,26 @@ export class User {
     return seq;
   }
 
-  /**
-   * Send a POST request to our signup endpoint with the data
-   * the user entered on the form.
-   */
   signup(accountInfo: any) {
     let seq = this.api.simplePost('signup', accountInfo).share();
+
+    seq
+      .map(res => res.json())
+      .subscribe(res => {
+        console.log(res, 'resresresresresresresresresresres')
+
+        if (res.status == 'success') {
+          this._loggedIn(res);
+        }
+      }, err => {
+        console.error('ERROR', err);
+      });
+
+    return seq;
+  }
+
+  updateUser(user: any) {
+    let seq = this.api.put('update-user/' + user._id, user).share();
 
     seq
       .map(res => res.json())

@@ -14,43 +14,12 @@ var bcrypt = require('bcrypt-nodejs');
 var port = process.env.PORT || 8080;
 mongoose.Promise = global.Promise;
 mongoose.connect(config.database, {useMongoClient: true});
-app.set('superSecret', config.secret); // secret variable
-
-// app.use(function(req, res, next) {
-//     res.header("Access-Control-Allow-Headers","Access-Control-Allow-Headers");
-//
-// });
-// app.use(function(req, res, next) {
-//     res.header("Access-Control-Allow-Origin", "*"); // keep this if your api accepts cross-origin requests
-//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, X-Access-Token");
-//     next();
-// });
-
-// app.use(function(req, res, next) {
-//     res.header("Access-Control-Allow-Origin", '*');
-//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//     next();
-// });
-
-
-// app.use(cors({
-//     allowedOrigins: [
-//         'http://localhost:8100'
-//     ]
-// }));
-
+app.set('superSecret', config.secret);
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 app.use(morgan('dev'));
-// app.use(function(req, res, next) {
-//     res.header('Access-Control-Allow-Origin', '*');
-//     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-//     res.header('Access-Control-Allow-Headers', 'Accept, Content-Type, Origin');
-//     next();
-// });
-
 
 app.use(cors({
     allowedOrigins: ['http://localhost:8100'],
@@ -61,6 +30,7 @@ app.get('/', function (req, res) {
 });
 
 app.post('/signup', userController.createUser);
+app.put('/update-user/:id', userController.updateUser);
 
 var apiRoutes = express.Router();
 
