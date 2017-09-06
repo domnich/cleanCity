@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 app.use(morgan('dev'));
 
 app.use(cors({
-    allowedOrigins: ['http://localhost:8100'],
+    allowedOrigins: ['http://localhost:8100', 'http://localhost:8101'],
     headers: ['X-Requested-With', 'Accept', 'Origin', 'x-access-token', 'Content-Type']
 }));
 app.get('/', function (req, res) {
