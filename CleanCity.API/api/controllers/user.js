@@ -4,6 +4,7 @@ var bcrypt = require('bcrypt-nodejs');
 var jwt    = require('jsonwebtoken');
 var express     = require('express');
 var app         = express();
+var config = require('../../config');
 // Create endpoint /api/users for POST
 exports.createUser = function(req, res) {
     var user = new User({
@@ -55,14 +56,108 @@ exports.createUser = function(req, res) {
 
 
 exports.updateUser = function (req, res) {
-    console.log(req.params, 'req.bodyreq.body')
-    User.findOneAndUpdate({_id: req.params.id}, req.body, {new: true}, function(err, user) {
-        if (err)
-        return res.status(401).send({
-            success: false,
-            message: err.message
-        });
-        res.json(user);
+
+    User.findOne({
+        _id: req.params.id
+    }, function(err, user) {
+
+        if (err) throw err;
+
+        if (!user) {
+            return res.status(401).send({
+                success: false,
+                message: 'User not found.'
+            });
+        } else if (user) {
+
+            if(req.body.oldPassword) {
+                bcrypt.compare(req.body.oldPassword, user.password, function(err, isMatch) {
+                    if(isMatch) {
+
+                        User.verifyPassword(req.body.password, req.body.passwordConf, function (passwordsMatch) {
+                            if(passwordsMatch) {
+
+                                bcrypt.genSalt(5, function(err, salt) {
+                                    if (err) {
+                                        return res.status(401).send({
+                                            success: false,
+                                            message: 'Something went wrong.'
+                                        });
+                                    }
+
+                                    bcrypt.hash(req.body.password, salt, null, function(err, hash) {
+                                        if (err) {
+                                            return res.status(401).send({
+                                                success: false,
+                                                message: 'Something went wrong.'
+                                            });
+                                        }
+
+                                        var userObj = req.body;
+                                        delete userObj.oldPassword;
+                                        userObj.password = hash;
+                                        userObj.passwordConf = hash;
+
+                                        User.findOneAndUpdate({_id: req.params.id}, userObj, {new: true}, function(err, user) {
+                                            if (err)
+                                                return res.status(401).send({
+                                                    success: false,
+                                                    message: err.message
+                                                });
+
+
+                                            var token = jwt.sign(user, config.secret, {
+                                                expiresIn : 60*60*24 //expires in 24 hours
+                                            });
+
+                                            res.json({
+                                                success: true,
+                                                message: 'User was updated',
+                                                user: user,
+                                                token: token
+                                            });
+
+                                        });
+
+                                    });
+                                });
+
+                            } else {
+                                return res.status(403).send({
+                                    success: false,
+                                    message: "Passwords doesn't math."
+                                });
+                            }
+                        });
+
+
+                    } else {
+                        return res.status(401).send({
+                            success: false,
+                            message: 'You have entered wrong password.'
+                        });
+                    }
+                });
+            } else {
+                delete req.body.password;
+                delete req.body.passwordConf;
+
+                User.findOneAndUpdate({_id: req.params.id}, req.body, {new: true}, function(err, user) {
+                    if (err)
+                        return res.status(401).send({
+                            success: false,
+                            message: err.message
+                        });
+
+                    res.json({
+                        success: true,
+                        message: 'User was updated',
+                        user: user
+                    });
+                });
+            }
+        }
+
     });
 };
 
