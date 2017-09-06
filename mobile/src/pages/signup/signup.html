@@ -18,19 +18,19 @@
   <form>
     <ion-list>
       <ion-item>
-        <ion-label fixed>{{'Email' | translate}}</ion-label>
+        <ion-label floating>{{'Email' | translate}}</ion-label>
         <ion-input type="email" [(ngModel)]="account.email" name="email"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label fixed>{{'NAME' | translate}}</ion-label>
+        <ion-label floating>{{'NAME' | translate}}</ion-label>
         <ion-input type="text" [(ngModel)]="account.username" name="username"></ion-input>
       </ion-item>
 
 
 
       <ion-item>
-        <ion-label fixed>Организация</ion-label>
+        <ion-label floating>Организация</ion-label>
         <ion-input type="text" [(ngModel)]="account.organization" name="organization"></ion-input>
       </ion-item>
 
@@ -44,12 +44,12 @@
       -->
 
       <ion-item>
-        <ion-label fixed>Город</ion-label>
+        <ion-label floating>Город</ion-label>
         <ion-input type="text" [(ngModel)]="account.city" name="city"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label fixed>Улица</ion-label>
+        <ion-label floating>Улица</ion-label>
         <ion-input type="text" [(ngModel)]="account.street" name="street"></ion-input>
       </ion-item>
 
@@ -63,7 +63,7 @@
       </ion-item>
 
       <ion-item *ngIf="!isSettingsPage">
-        <ion-label fixed>Подтвердить Пароль</ion-label>
+        <ion-label floating>Подтвердить Пароль</ion-label>
         <ion-input type="password" [(ngModel)]="account.passwordConf" name="confirmPassword"></ion-input>
       </ion-item>
 
