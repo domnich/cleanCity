@@ -3,8 +3,8 @@
   <ion-navbar>
     <ion-title>{{ 'SEARCH_TITLE' | translate }}</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="logout()">
-        Выйти
+      <button ion-button icon-only ion-log-out (click)="logout()">
+        <ion-icon name='log-out'></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>

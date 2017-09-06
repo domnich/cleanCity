@@ -70,20 +70,16 @@ export class ListMasterPage {
 
       spinner.dismiss();
     }, (err) => {
-
-      console.log(err)
+      let toast = this.toastCtrl.create({
+        message: 'Что то пошло не так... Пожалуйста повторите попытку или наберите нас на телефон',
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
       if(err.status === 404) {
-        let toast = this.toastCtrl.create({
-          message: 'Что то пошло не так... Пожалуйста повторите попытку или наберите нас на телефон',
-          duration: 3000,
-          position: 'top'
-        });
-        toast.present();
         setTimeout(() => {
           this.logout();
         }, 1000);
-      } else {
-        alert('ADD ERROR DESCRIPTION');
       }
       spinner.dismiss();
     });
