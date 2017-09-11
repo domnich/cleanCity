@@ -5,7 +5,7 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { Storage, IonicStorageModule } from '@ionic/storage';
 import { Geolocation } from '@ionic-native/geolocation';
 import { NativeGeocoder } from '@ionic-native/native-geocoder';
-
+import { InputMask } from'./directives/mask';
 import { MyApp } from './app.component';
 
 import { CardsPage } from '../pages/cards/cards';
@@ -73,7 +73,8 @@ export function provideSettings(storage: Storage) {
     SignupPage,
     TabsPage,
     TutorialPage,
-    WelcomePage
+    WelcomePage,
+    InputMask
   ],
   imports: [
     BrowserModule,
