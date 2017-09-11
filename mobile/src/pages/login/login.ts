@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {NavController, ToastController, LoadingController} from 'ionic-angular';
+import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import {Storage} from '@ionic/storage';
 import {MainPage} from '../../pages/pages';
 
@@ -14,29 +15,39 @@ import {SignupPage} from '../signup/signup';
 })
 export class LoginPage {
   account: { email: string, password: string } = {
-    email: 'test@example.com',
-    password: 'test'
+    email: '',
+    password: ''
   };
-
-  // Our translated text strings
   private loginErrorString: string;
-
+  loginForm: FormGroup;
   constructor(public navCtrl: NavController,
               public user: User,
               public toastCtrl: ToastController,
               public translateService: TranslateService,
-              private storage: Storage, private loader: LoadingController ) {
-    //this.storage.remove('user');
+              private storage: Storage,
+              private formBuilder: FormBuilder,
+              private loader: LoadingController ) {
+
     this.translateService.get('LOGIN_ERROR').subscribe((value) => {
       this.loginErrorString = value;
     });
 
-    // let spinner = this.loader.create({
-    // });
-    // spinner.present();
+
+
+    this.createForm();
   }
 
-  // Attempt to login in through our User service
+  test() {
+    console.log(this.loginForm.get('email'))
+  }
+
+  createForm() {
+    this.loginForm = this.formBuilder.group({
+      email: [null, [Validators.required, Validators.email]],
+      password: [null, Validators.required],
+    });
+  }
+
   doLogin() {
     let spinner = this.loader.create({
        dismissOnPageChange: true
@@ -59,10 +70,6 @@ export class LoginPage {
 
        });
      }
-
-
-
-      // this.navCtrl.push(MainPage);
     }, (err) => {
       // Unable to log in
       let toast = this.toastCtrl.create({

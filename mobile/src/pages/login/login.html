@@ -6,30 +6,25 @@
       {{ 'WELCOME_INTRO' | translate }}
     </div>
   </div>
-  <form (submit)="doLogin()">
+  <form [formGroup]="loginForm" novalidate>
     <ion-list>
-
       <ion-item>
         <ion-label floating>{{ 'EMAIL' | translate }}</ion-label>
-        <ion-input type="email" [(ngModel)]="account.email" name="email"></ion-input>
+        <ion-input type="email" [(ngModel)]="account.email" name="email" formControlName="email"></ion-input>
       </ion-item>
-
-      <!--
-      Want to use a Username instead of an Email? Here you go:
-
-      <ion-item>
-        <ion-label floating>{{ 'USERNAME' | translate }}</ion-label>
-        <ion-input type="text" [(ngModel)]="account.username" name="username"></ion-input>
+      <ion-item *ngIf="loginForm.controls.email.invalid && loginForm.controls.email.touched">
+        <span *ngIf="loginForm.controls.email.errors.required && loginForm.controls.email.errors.email" class="error-message">Это обязательное поле</span>
+        <span *ngIf="!loginForm.controls.email.errors.required && loginForm.controls.email.errors.email" class="error-message">Вы ввели некорректный email</span>
       </ion-item>
-      -->
-
       <ion-item>
         <ion-label floating>{{ 'PASSWORD' | translate }}</ion-label>
-        <ion-input type="password" [(ngModel)]="account.password" name="password"></ion-input>
+        <ion-input type="password" [(ngModel)]="account.password" name="password" formControlName="password"></ion-input>
       </ion-item>
-
+      <ion-item *ngIf="loginForm.controls.password.invalid && loginForm.controls.password.touched">
+        <span *ngIf="loginForm.controls.password.errors.required" class="error-message">Это обязательное поле</span>
+      </ion-item>
       <div padding>
-        <button ion-button color="primary" block>{{ 'LOGIN_BUTTON' | translate }}</button>
+        <button [disabled]="!loginForm.valid"  ion-button color="primary" block>{{ 'LOGIN_BUTTON' | translate }}</button>
       </div>
     </ion-list>
   </form>
