@@ -37,6 +37,9 @@ export class SignupPage {
     });
 
 
+      //pattern="/^\(\d{3}\) \d{3}-\d{2}-\d{2}$/"
+
+
     this.translateService.get('SIGNUP_ERROR').subscribe((value) => {
       this.signupErrorString = value;
     })
