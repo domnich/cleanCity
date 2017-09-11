@@ -13,7 +13,8 @@ import {LoginPage} from '../login/login';
   templateUrl: 'signup.html'
 })
 export class SignupPage {
-  account: {name?: string, email?: string, password?: string, city?: string, street?: string, passwordConf?: string, organization?: string} = {};
+  masks: any;
+  account: {name?: string, phone?: string, email?: string, password?: string, city?: string, street?: string, passwordConf?: string, organization?: string} = {};
 
   // Our translated text strings
   private signupErrorString: string;
@@ -27,9 +28,7 @@ export class SignupPage {
               public translateService: TranslateService,
               private geolocation: Geolocation,
               private nativeGeocoder: NativeGeocoder, private storage: Storage, private loader: LoadingController) {
-
-
-    this.storage.get('user').then((user) => {
+      this.storage.get('user').then((user) => {
 
       this.isSettingsPage = user && user.hasOwnProperty('token');
       if(this.isSettingsPage) {

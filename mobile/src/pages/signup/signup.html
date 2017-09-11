@@ -27,21 +27,15 @@
         <ion-input type="text" [(ngModel)]="account.username" name="username"></ion-input>
       </ion-item>
 
-
+      <ion-item>
+        <ion-label stacked>Телефон</ion-label>
+        <ion-input  type="tel"  name="phone" [(ngModel)]="account.phone"></ion-input>
+      </ion-item>
 
       <ion-item>
         <ion-label floating>Организация</ion-label>
         <ion-input type="text" [(ngModel)]="account.organization" name="organization"></ion-input>
       </ion-item>
-
-      <!--
-      Want to add a Username? Here you go:
-
-      <ion-item>
-        <ion-label floating>Username</ion-label>
-        <ion-input type="text" [(ngModel)]="account.username" name="username"></ion-input>
-      </ion-item>
-      -->
 
       <ion-item>
         <ion-label floating>Город</ion-label>
