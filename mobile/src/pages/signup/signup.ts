@@ -64,7 +64,7 @@ export class SignupPage {
   createForm(account?) {
     this.form = this.formBuilder.group({
       email: [null, [Validators.required, Validators.email]],
-      username: [null, [Validators.required]],
+      username: [null, [Validators.required], this.customValidator()],
       phone: [null, [Validators.required]],
       organization: [null],
       city: [null],
@@ -74,6 +74,10 @@ export class SignupPage {
     });
   }
 
+
+  customValidator() {
+    console.log(this)
+  }
 
   signup() {
     let spinner = this.loader.create({
