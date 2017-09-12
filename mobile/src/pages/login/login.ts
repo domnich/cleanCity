@@ -37,10 +37,6 @@ export class LoginPage {
     this.createForm();
   }
 
-  test() {
-    console.log(this.loginForm.get('email'))
-  }
-
   createForm() {
     this.loginForm = this.formBuilder.group({
       email: [null, [Validators.required, Validators.email]],
@@ -48,11 +44,12 @@ export class LoginPage {
     });
   }
 
-  doLogin() {
+  login() {
     let spinner = this.loader.create({
        dismissOnPageChange: true
     });
     spinner.present();
+    console.log(this.account)
     this.user.login(this.account).subscribe((resp) => {
 
      if(resp.status == 200) {

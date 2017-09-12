@@ -15,36 +15,44 @@
 
 
 <ion-content>
-  <form>
+  <form [formGroup]="form" novalidate>
     <ion-list>
       <ion-item>
         <ion-label floating>{{'Email' | translate}}</ion-label>
-        <ion-input type="email" [(ngModel)]="account.email" name="email"></ion-input>
+        <ion-input type="email" [(ngModel)]="account.email" name="email" formControlName="email"></ion-input>
       </ion-item>
-
+      <ion-item *ngIf="form.controls.email.invalid && form.controls.email.touched">
+        <span *ngIf="form.controls.email.errors.required && form.controls.email.errors.email" class="error-message">Это обязательное поле</span>
+        <span *ngIf="!form.controls.email.errors.required && form.controls.email.errors.email" class="error-message">Вы ввели некорректный email</span>
+      </ion-item>
       <ion-item>
         <ion-label floating>{{'NAME' | translate}}</ion-label>
-        <ion-input type="text" [(ngModel)]="account.username" name="username"></ion-input>
+        <ion-input type="text" [(ngModel)]="account.username" name="username" formControlName="username"></ion-input>
       </ion-item>
-
+      <ion-item *ngIf="form.controls.username.invalid && form.controls.username.touched && form.controls.username.errors.required">
+        <span class="error-message">Это обязательное поле</span>
+      </ion-item>
       <ion-item>
-        <ion-label stacked>Телефон</ion-label>
-        <ion-input  placeholder="(xxx) xxx-xx-xx" mask="(***) ***-**-**" [(ngModel)]="account.phone" name="phone"></ion-input>
+        <ion-label floating>Телефон</ion-label>
+        <ion-input  type="tel"  [(ngModel)]="account.phone" name="phone" formControlName="phone"></ion-input>
+        <!--<ion-input  placeholder="(xxx) xxx-xx-xx" mask="(***) ***-**-**" [(ngModel)]="account.phone" name="phone"></ion-input>-->
       </ion-item>
-
+      <ion-item *ngIf="form.controls.phone.invalid && form.controls.phone.touched && form.controls.phone.errors.required">
+        <span class="error-message">Это обязательное поле</span>
+      </ion-item>
       <ion-item>
         <ion-label floating>Организация</ion-label>
-        <ion-input type="text" [(ngModel)]="account.organization" name="organization"></ion-input>
+        <ion-input type="text" [(ngModel)]="account.organization" name="organization" formControlName="organization"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label floating>Город</ion-label>
-        <ion-input type="text" [(ngModel)]="account.city" name="city"></ion-input>
+        <ion-input type="text" [(ngModel)]="account.city" name="city" formControlName="city"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label floating>Улица</ion-label>
-        <ion-input type="text" [(ngModel)]="account.street" name="street"></ion-input>
+        <ion-input type="text" [(ngModel)]="account.street" name="street" formControlName="street"></ion-input>
       </ion-item>
 
       <ion-item>
@@ -53,14 +61,18 @@
 
       <ion-item *ngIf="!isSettingsPage">
         <ion-label fixed>{{'PASSWORD' | translate}}</ion-label>
-        <ion-input type="password" [(ngModel)]="account.password" name="password"></ion-input>
+        <ion-input type="password" [(ngModel)]="account.password" name="password" formControlName="password"></ion-input>
       </ion-item>
-
+      <ion-item *ngIf="form.controls.password.invalid && form.controls.password.touched && form.controls.password.errors.required">
+        <span class="error-message">Это обязательное поле</span>
+      </ion-item>
       <ion-item *ngIf="!isSettingsPage">
         <ion-label floating>Подтвердить Пароль</ion-label>
-        <ion-input type="password" [(ngModel)]="account.passwordConf" name="confirmPassword"></ion-input>
+        <ion-input type="password" [(ngModel)]="account.passwordConf" name="confirmPassword" formControlName="confirmPassword"></ion-input>
       </ion-item>
-
+      <ion-item *ngIf="form.controls.confirmPassword.invalid && form.controls.confirmPassword.touched && form.controls.confirmPassword.errors.required">
+        <span class="error-message">Это обязательное поле</span>
+      </ion-item>
       <div padding *ngIf="!isSettingsPage">
         <button  (click)="signup()" ion-button color="primary" block>{{'SIGNUP' | translate}}</button>
       </div>

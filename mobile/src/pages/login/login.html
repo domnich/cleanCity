@@ -6,7 +6,7 @@
       {{ 'WELCOME_INTRO' | translate }}
     </div>
   </div>
-  <form [formGroup]="loginForm" novalidate>
+  <form [formGroup]="loginForm" (submit)="login()" novalidate>
     <ion-list>
       <ion-item>
         <ion-label floating>{{ 'EMAIL' | translate }}</ion-label>

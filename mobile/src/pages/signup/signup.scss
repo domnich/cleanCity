@@ -5,4 +5,8 @@ page-signup {
   .item {
     padding: 0 16px;
   }
+  .error-message {
+    color: color($colors, 'danger');
+    font-size: 12px;
+  }
 }

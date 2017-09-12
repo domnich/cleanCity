@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {Geolocation} from '@ionic-native/geolocation';
 import {NavController, ToastController, LoadingController} from 'ionic-angular';
+import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import {NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResult} from '@ionic-native/native-geocoder';
 import {MainPage} from '../../pages/pages';
 import {User} from '../../providers/user';
@@ -14,36 +15,65 @@ import {LoginPage} from '../login/login';
 })
 export class SignupPage {
   masks: any;
-  account: {name?: string, phone?: string, email?: string, password?: string, city?: string, street?: string, passwordConf?: string, organization?: string} = {};
+  account: {username?: string, phone?: string, email?: string, password?: string, city?: string, street?: string, confirmPassword?: string, organization?: string} = {
+    email: '',
+    username: '',
+    phone: '',
+    organization: '',
+    city: '',
+    street: '',
+    password: '',
+    confirmPassword: ''
+  };
 
   // Our translated text strings
   private signupErrorString: string;
   private isSettingsPage: any;
   private pageTitleKey: string;
   private pageTitle: string | any;
-
+  form: FormGroup;
   constructor(public navCtrl: NavController,
               public user: User,
               public toastCtrl: ToastController,
               public translateService: TranslateService,
               private geolocation: Geolocation,
-              private nativeGeocoder: NativeGeocoder, private storage: Storage, private loader: LoadingController) {
+              private nativeGeocoder: NativeGeocoder,
+              private storage: Storage,
+              private loader: LoadingController,
+              private formBuilder: FormBuilder) {
       this.storage.get('user').then((user) => {
 
       this.isSettingsPage = user && user.hasOwnProperty('token');
       if(this.isSettingsPage) {
         this.account = user;
+        this.createForm(this.account);
+      } else {
+        this.createForm();
       }
     });
-
-
       //pattern="/^\(\d{3}\) \d{3}-\d{2}-\d{2}$/"
 
 
     this.translateService.get('SIGNUP_ERROR').subscribe((value) => {
       this.signupErrorString = value;
-    })
+    });
+
+    this.createForm();
   }
+
+  createForm(account?) {
+    this.form = this.formBuilder.group({
+      email: [null, [Validators.required, Validators.email]],
+      username: [null, [Validators.required]],
+      phone: [null, [Validators.required]],
+      organization: [null],
+      city: [null],
+      street: [null],
+      password: [null, Validators.required],
+      confirmPassword: [null, Validators.required]
+    });
+  }
+
 
   signup() {
     let spinner = this.loader.create({
