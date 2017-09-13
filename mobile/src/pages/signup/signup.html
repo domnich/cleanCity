@@ -22,23 +22,25 @@
         <ion-input validateOnBlur type="email" [(ngModel)]="account.email" name="email" formControlName="email" autocapitalize="off"></ion-input>
       </ion-item>
       <ion-item *ngIf="form.controls.email.invalid && form.controls.email.touched">
-        <span *ngIf="form.controls.email.errors.required && form.controls.email.errors.email" class="error-message">Это обязательное поле</span>
-        <span *ngIf="!form.controls.email.errors.required && form.controls.email.errors.email" class="error-message">Вы ввели некорректный email</span>
+        <span *ngIf="form.controls.email.errors.required && form.controls.email.errors.email" class="error-message">Это поле является обязательным</span>
+        <span *ngIf="!form.controls.email.errors.required && form.controls.email.errors.email" class="error-message">Некорректный email</span>
       </ion-item>
       <ion-item>
         <ion-label floating>{{'NAME' | translate}}</ion-label>
         <ion-input validateOnBlur type="text" [(ngModel)]="account.username" name="username" formControlName="username"></ion-input>
       </ion-item>
       <ion-item *ngIf="form.controls.username.invalid && form.controls.username.touched && form.controls.username.errors.required">
-        <span class="error-message">Это обязательное поле</span>
+        <span class="error-message">Это поле является обязательным</span>
       </ion-item>
       <ion-item>
         <ion-label floating>Телефон</ion-label>
-        <ion-input validateOnBlur type="tel"  [(ngModel)]="account.phone" name="phone" formControlName="phone"></ion-input>
+        <ion-input maxlength="9" validateOnBlur type="tel"  [(ngModel)]="account.phone" name="phone" formControlName="phone"></ion-input>
         <!--<ion-input  placeholder="(xxx) xxx-xx-xx" mask="(***) ***-**-**" [(ngModel)]="account.phone" name="phone"></ion-input>-->
       </ion-item>
-      <ion-item *ngIf="form.controls.phone.invalid && form.controls.phone.touched && form.controls.phone.errors.required">
-        <span class="error-message">Это обязательное поле</span>
+      {{form.controls.phone.errors | json}}
+      <ion-item *ngIf="form.controls.phone.invalid && form.controls.phone.touched">
+        <span *ngIf="form.controls.phone.errors.required && form.controls.phone.errors.required" class="error-message">Это поле является обязательным</span>
+        <span *ngIf="form.controls.phone.errors.validPhone && form.controls.phone.errors.validPhone"  class="error-message">Некорректный номер телефона</span>
       </ion-item>
       <ion-item>
         <ion-label floating>Организация</ion-label>
@@ -60,18 +62,18 @@
       </ion-item>
 
       <ion-item *ngIf="!isSettingsPage">
-        <ion-label fixed>{{'PASSWORD' | translate}}</ion-label>
+        <ion-label floating>{{'PASSWORD' | translate}}</ion-label>
         <ion-input validateOnBlur type="password" [(ngModel)]="account.password" name="password" formControlName="password"></ion-input>
       </ion-item>
       <ion-item *ngIf="form.controls.password.invalid && form.controls.password.touched && form.controls.password.errors.required">
-        <span class="error-message">Это обязательное поле</span>
+        <span class="error-message">Это поле является обязательным</span>
       </ion-item>
       <ion-item *ngIf="!isSettingsPage">
         <ion-label floating>Подтвердить Пароль</ion-label>
         <ion-input validateOnBlur type="password" [(ngModel)]="account.passwordConf" name="confirmPassword" formControlName="confirmPassword"></ion-input>
       </ion-item>
       <ion-item *ngIf="form.controls.confirmPassword.invalid && form.controls.confirmPassword.touched && form.controls.confirmPassword.errors.required">
-        <span class="error-message">Это обязательное поле</span>
+        <span class="error-message">Это поле является обязательным</span>
       </ion-item>
       <div padding *ngIf="!isSettingsPage">
         <button  (click)="signup()" ion-button color="primary" block>{{'SIGNUP' | translate}}</button>

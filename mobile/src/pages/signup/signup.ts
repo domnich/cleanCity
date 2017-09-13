@@ -1,13 +1,21 @@
 import {Component} from '@angular/core';
 import {Geolocation} from '@ionic-native/geolocation';
 import {NavController, ToastController, LoadingController} from 'ionic-angular';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import {Validators, FormBuilder, FormGroup, AbstractControl} from '@angular/forms';
 import {NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResult} from '@ionic-native/native-geocoder';
 import {MainPage} from '../../pages/pages';
 import {User} from '../../providers/user';
 import {Storage} from '@ionic/storage';
 import {TranslateService} from '@ngx-translate/core';
 import {LoginPage} from '../login/login';
+import { ValidatePhone } from "../../app/validators/phoneValidator";
+
+export const emailMatcher = (control: AbstractControl): {[key: string]: boolean} => {
+  const password = control.get('password');
+  const confirmPassword = control.get('confirmPassword');
+console.log(password.value, 'username', confirmPassword.value);
+  return  { nomatch: true };
+};
 
 @Component({
   selector: 'page-signup',
@@ -64,14 +72,17 @@ export class SignupPage {
   createForm(account?) {
     this.form = this.formBuilder.group({
       email: [null, [Validators.required, Validators.email]],
-      username: [null, [Validators.required], this.customValidator()],
-      phone: [null, [Validators.required]],
+      username: [null, [Validators.required]],
+      phone: [null, [Validators.required, ValidatePhone]],
       organization: [null],
       city: [null],
       street: [null],
       password: [null, Validators.required],
       confirmPassword: [null, Validators.required]
-    });
+    } ,{ validator: emailMatcher });
+
+
+    //,{ validator: emailMatcher }
   }
 
 
