@@ -88,7 +88,9 @@ export function provideSettings(storage: Storage) {
         deps: [Http]
       }
     }),
-    IonicModule.forRoot(MyApp, {tabsPlacement: 'top'}),
+    IonicModule.forRoot(MyApp, {tabsPlacement: 'top',
+      scrollAssist: false,
+      autoFocusAssist: false}),
     IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
